@@ -9,6 +9,8 @@ public class Feedback : MonoBehaviour {
     //public RectTransform myMessage;
     //public RectTransform yourMessage;
     public RectTransform messageRow;
+    private string token;
+    private string server = "http://188.225.58.54";
 
     public void OnSend()
     {
@@ -23,7 +25,8 @@ public class Feedback : MonoBehaviour {
         messageImage.rectTransform.pivot = Vector2.one;
         messageImage.rectTransform.anchoredPosition = Vector2.zero;
         StartCoroutine(size(messageImage, row, messageText));
-        Answer("Ваше обращение получено! Пожалуйста, ожидайте ответа");
+        Answer("Ваше обращение получено! Пожалуйста, ожидайте ответа"); // optimistic update UI
+        StartCoroutine(sendToServer(messageText.text));
     }
 
     private IEnumerator size(Image messageImage, RectTransform row, Text messageText)
@@ -45,5 +48,14 @@ public class Feedback : MonoBehaviour {
         messageImage.rectTransform.pivot = Vector2.up;
         messageImage.rectTransform.anchoredPosition = Vector2.zero;
         StartCoroutine(size(messageImage, row, messageText));
+    }
+
+    private IEnumerator sendToServer(string message)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("token", token);
+        form.AddField("message", message);
+        WWW www = new WWW(server + "/save", form);
+        yield return www;
     }
 }
