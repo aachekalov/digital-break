@@ -44,5 +44,6 @@ public class Feedback : MonoBehaviour {
         messageImage.rectTransform.anchorMax = Vector2.up;
         messageImage.rectTransform.pivot = Vector2.up;
         messageImage.rectTransform.anchoredPosition = Vector2.zero;
+        StartCoroutine(size(messageImage, row, messageText));
     }
 }
